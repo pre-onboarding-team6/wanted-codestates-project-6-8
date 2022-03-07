@@ -19,7 +19,7 @@ const items : ListData[] = [{
 }]
 
 const List = () => {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState<boolean>(false)
   const navigate = useNavigate()
 
   console.log('openModal:',openModal)

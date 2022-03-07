@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export interface ListData {
-  id: number,
+  id?: number,
   name: string,
   memo?: string,
   address: string,
@@ -10,8 +10,8 @@ export interface ListData {
 
 interface Iprops {
   data: ListData
-  setOpenModal?: any
-  setIsEditing?:any
+  setOpenModal?: (a:boolean) => boolean
+  setIsEditing?: (a:boolean) => boolean
 }
 
 const ListCard = (props: Iprops) => {
@@ -20,13 +20,12 @@ const ListCard = (props: Iprops) => {
 
   const selectItem = () => {
     console.log('select')
-    setOpenModal(true)
+    setOpenModal && setOpenModal(true)
   }
 
   const editCard = () => {
     console.log('edit')
-    setIsEditing(true)
-
+    setIsEditing && setIsEditing(true)
   }
 
   return <ListContainer onClick={setOpenModal ? selectItem : editCard}>

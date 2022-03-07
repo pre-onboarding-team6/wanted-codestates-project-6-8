@@ -18,7 +18,7 @@ const items : ListData[] = [{
 }]
 
 const Main = (props : any) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   console.log('isEditing:', isEditing)
 
