@@ -1,31 +1,38 @@
 import styled from '@emotion/styled';
 
-type ListData = {
+export interface ListData {
+  id?: number,
   name: string,
   memo?: string,
   address: string,
-  contact: string | number
+  contact: string
 }
 
-const ListCard = (props:any) => {
-  const { name, memo, address, contact } = props.data;
+interface Iprops {
+  data: ListData
+  setOpenModal?: (a:boolean) => boolean
+  setIsEditing?: (a:boolean) => boolean
+}
+
+const ListCard = (props: Iprops) => {
+  const { data, setOpenModal, setIsEditing } = props;
+  const { id, name, memo, address, contact } = data;
 
   const selectItem = () => {
     console.log('select')
-    props.setOpenModal(true)
+    setOpenModal && setOpenModal(true)
   }
 
   const editCard = () => {
     console.log('edit')
-    props.setIsEditing(true)
-
+    setIsEditing && setIsEditing(true)
   }
 
-  return <ListContainer onClick={props.setOpenModal ? selectItem : editCard}>
-    <Name>이름: {name}</Name>
-    <Address>주소: {address}</Address>
-    <Contact>연락처: {contact}</Contact>
-    {memo && <Memo>메모: {memo}</Memo>}
+  return <ListContainer onClick={setOpenModal ? selectItem : editCard}>
+    <Name>{name}</Name>
+    <Address>{address}</Address>
+    <Contact>{contact}</Contact>
+    {memo && <Memo>{memo}</Memo>}
   </ListContainer>
 }
 
@@ -34,10 +41,10 @@ export default ListCard;
 const ListContainer = styled.li`
   width: 100%;
   height: auto;
-  padding: 5px 15px;
+  padding: 10px 15px;
   margin-top: 10px;
   border: 1px solid #ddd;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   font-size: 16px;
@@ -51,18 +58,21 @@ const Name = styled.span`
   line-height: 20px;
   margin-top: 5px;
   display: block;
+  font-weight: 600;
 `
 
 const Address = styled.span`
-  line-height: 20px;
-  margin-top: 5px;
+  line-height: 18px;
+  margin-top: 3px;
   display: block;
+  font-size: 14px;
 `
 
 const Contact = styled.span`
-  line-height: 20px;
-  margin-top: 5px;
+  line-height: 18px;
+  margin-top: 3px;
   display: block;
+  font-size: 14px;
 `
 
 const Memo = styled.span`
@@ -70,5 +80,5 @@ const Memo = styled.span`
   line-height: 20px;
   margin-top: 5px;
   display: block;
-  color: #1a3563;
+  color: #E1514a;
 `

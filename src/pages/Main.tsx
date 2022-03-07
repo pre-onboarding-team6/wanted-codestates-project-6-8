@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
 import ListCard from '../components/ListCard';
+import { ListData } from '../components/ListCard';
 
-const items = [{
+// fetch data -> item 예시
+const items : ListData[] = [{
   id: 1,
   name: '속리산숲체험휴양마을',
   address: '충청북도 보은군 속리산면 속리산로 596',
@@ -16,7 +18,7 @@ const items = [{
 }]
 
 const Main = (props : any) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   console.log('isEditing:', isEditing)
 
@@ -31,7 +33,7 @@ const Main = (props : any) => {
   </SearchBar>
   <SavedItem>
     {/* <div>list section...</div> */}
-    {items.map((item, index) => <ListCard key={index} data={item} setIsEditing={setIsEditing}/>)}
+    {items.map((item:ListData, index:number) => <ListCard key={index} data={item} setIsEditing={setIsEditing}/>)}
   </SavedItem>
   </>)
 }
