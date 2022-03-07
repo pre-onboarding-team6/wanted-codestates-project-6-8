@@ -2,8 +2,10 @@ import ListCard from '../components/ListCard';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { ListData } from '../components/ListCard';
 
-const items = [{
+// fetch data -> item 예시
+const items : ListData[] = [{
   id: 1,
   name: '속리산숲체험휴양마을',
   address: '충청북도 보은군 속리산면 속리산로 596',
@@ -16,14 +18,7 @@ const items = [{
   contact: '043-540-3220'
 }]
 
-type ListData = {
-  name: string,
-  memo?: string,
-  address: string,
-  contact: string | number
-}
-
-const List = (props:any) => {
+const List = () => {
   const [openModal, setOpenModal] = useState(false)
   const navigate = useNavigate()
 
@@ -40,7 +35,7 @@ const List = (props:any) => {
     </PrevButton>
   </NavigationBar>
   <ListContainer>
-    {items.map((item, index) => <ListCard key={index} data={item} setOpenModal={setOpenModal}/>)}
+    {items.map((item:ListData, index:number) => <ListCard key={index} data={item} setOpenModal={setOpenModal} />)}
   </ListContainer>
   </>
 }
