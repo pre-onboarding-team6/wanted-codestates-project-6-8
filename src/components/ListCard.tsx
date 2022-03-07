@@ -10,8 +10,8 @@ export interface ListData {
 
 interface Iprops {
   data: ListData
-  setOpenModal?: (a:boolean) => boolean
-  setIsEditing?: (a:boolean) => boolean
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>
+  setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ListCard = (props: Iprops) => {
