@@ -44,5 +44,10 @@
 <img src="https://user-images.githubusercontent.com/90097736/157158225-15b33807-d0fc-459f-8bd9-a653dbbbeeea.gif" height="400" alt="infiniteScroll">
 
 ### 3. 로컬스토리지 저장(+메모)
+<img src="https://user-images.githubusercontent.com/90097736/157171526-1ea5bef3-ef9c-4356-bff4-ecafb26e502e.gif" height="400" alt="save">
 
-### 4. 메인페이지(조회 및 수정)
+### 4. 저장된 리스트 수정 및 삭제
+<img src="https://user-images.githubusercontent.com/90097736/157171661-742925b2-5586-48ce-8b27-5ff8b1524efd.gif" height="400" alt="edit&delete" >
+
+### 4. 저장된 리스트 검색(이름, 주소, 메모)
+<img src="https://user-images.githubusercontent.com/90097736/157171773-57c47bbe-84a5-4e63-bf24-f075020f116f.gif" height="400" alt="search">
