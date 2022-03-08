@@ -18,6 +18,13 @@ const List = ({ setScrollLock }: ScrollProps) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
+  const [clickedItem, setClickedItem] = useState<ListData>({
+    id: 0,
+    휴양림_명칭: '',
+    memo: '',
+    휴양림_주소: '',
+    전화번호: '',
+  });
   const SERVICE_KEY = process.env.REACT_APP_SERVICE_KEY;
   const navigate = useNavigate();
 
@@ -71,11 +78,21 @@ const List = ({ setScrollLock }: ScrollProps) => {
           <React.Fragment key={index}>
             {items.length - 1 === index ? (
               <div ref={ref}>
-                <ListCard key={index} data={item} setOpenModal={setOpenModal} />
+                <ListCard
+                  key={index}
+                  data={item}
+                  setOpenModal={setOpenModal}
+                  setClickedItem={setClickedItem}
+                />
               </div>
             ) : (
               <div>
-                <ListCard key={index} data={item} setOpenModal={setOpenModal} />
+                <ListCard
+                  key={index}
+                  data={item}
+                  setOpenModal={setOpenModal}
+                  setClickedItem={setClickedItem}
+                />
               </div>
             )}
           </React.Fragment>
@@ -86,6 +103,7 @@ const List = ({ setScrollLock }: ScrollProps) => {
         setShowModal={setOpenModal}
         closeModal={handleCloseModal}
         setScrollLock={setScrollLock}
+        data={clickedItem}
       />
     </>
   ) : (

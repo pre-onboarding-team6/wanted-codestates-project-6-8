@@ -2,17 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ScrollProps } from '../pages/List';
+import { ListData } from './ListCard';
 
 interface Props extends ScrollProps {
   show: boolean;
   closeModal: () => void;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   useDelete?: boolean;
-  accomName?: string;
-  accomAddress?: string;
-  accomNumber?: string;
-  memo?: string;
-  setScrollLock: React.Dispatch<React.SetStateAction<boolean>>;
+  data: ListData;
 }
 
 export default function Modal({
@@ -20,11 +17,8 @@ export default function Modal({
   closeModal,
   setShowModal,
   useDelete = false,
-  accomName,
-  accomAddress,
-  accomNumber,
-  memo,
   setScrollLock,
+  data,
 }: Props) {
   const [prevActiveEl, setPrevActiveEl] = useState<Element | null>();
   const [nextOfPrevActiveEl, setNextOfPrevActiveEl] =
@@ -34,6 +28,8 @@ export default function Modal({
   const inputMemoRef = useRef<HTMLInputElement>(null);
   const firstFocusTrap = useRef<HTMLDivElement>(null);
   const lastFocusTrap = useRef<HTMLDivElement>(null);
+
+  const { id, 휴양림_명칭, 휴양림_주소, 전화번호 } = data;
 
   const closeModalAndFocusPrev = useCallback(() => {
     setShowModal(false);
@@ -152,13 +148,13 @@ export default function Modal({
       >
         <div ref={firstFocusTrap} tabIndex={0} />
         <Title>이름</Title>
-        <Content>{accomName ?? '속리산숲체험휴양마을'}</Content>
+        <Content>{휴양림_명칭 ?? '속리산숲체험휴양마을'}</Content>
         <Title>주소</Title>
         <Content>
-          {accomAddress ?? '충청북도 보은군 속리산면 속리산로 596'}
+          {휴양림_주소 ?? '충청북도 보은군 속리산면 속리산로 596'}
         </Content>
         <Title>연락처</Title>
-        <Content>{accomNumber ?? '043-540-3220'}</Content>
+        <Content>{전화번호 ?? '043-540-3220'}</Content>
         <Title>메모</Title>
         <Form onSubmit={saveItemWithMemo}>
           <InputMemo ref={inputMemoRef} placeholder="내용을 입력해주세요" />

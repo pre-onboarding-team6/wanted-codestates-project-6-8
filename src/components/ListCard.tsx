@@ -12,24 +12,26 @@ interface Iprops {
   data: ListData;
   setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedItem: React.Dispatch<React.SetStateAction<ListData>>;
 }
 
 const ListCard = (props: Iprops) => {
-  const { data, setOpenModal, setIsEditing } = props;
+  const { data, setOpenModal, setIsEditing, setClickedItem } = props;
   const { id, 휴양림_명칭, memo, 휴양림_주소, 전화번호 } = data;
 
   const selectItem = () => {
     console.log('select');
     setOpenModal && setOpenModal(true);
+    setClickedItem(data);
   };
 
   const editCard = () => {
     console.log('edit');
     setIsEditing && setIsEditing(true);
+    setClickedItem(data);
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLLIElement>) => {
-    console.log(e.key);
     if (e.key === 'Enter') {
       if (setOpenModal) {
         selectItem();
