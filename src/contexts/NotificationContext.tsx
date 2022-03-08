@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 export interface Notification {
   type: string;
@@ -15,6 +21,7 @@ export const NotificationContext = createContext(defaultApi);
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [dequed, setDequed] = useState(true);
 
   const notify = (message: string, type: string, dismissTime = 3000) => {
     const notification = {
@@ -23,23 +30,36 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
       dismissTime,
     };
     enqueueNotification(notification);
-    setTimeout(() => {
-      dequeueNotification();
-    }, dismissTime);
+    setDequed(false);
   };
 
   const enqueueNotification = (notification: Notification) => {
     setNotifications([...notifications, notification]);
   };
 
-  const dequeueNotification = () => {
-    setNotifications(notifications.slice(1));
-  };
+  const dequeueNotification = useCallback(() => {
+    setNotifications([]);
+    setDequed(true);
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!dequed) {
+      console.log('등록');
+      timer = setTimeout(
+        dequeueNotification,
+        notifications.length > 0
+          ? notifications[notifications.length - 1].dismissTime
+          : 3000,
+      );
+    }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [notifications, dequeueNotification, dequed]);
 
   return (
-    <NotificationContext.Provider
-      value={{ notifications: notifications, notify: notify }}
-    >
+    <NotificationContext.Provider value={{ notifications, notify }}>
       {children}
     </NotificationContext.Provider>
   );
