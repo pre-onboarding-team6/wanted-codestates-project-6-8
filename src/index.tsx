@@ -7,11 +7,13 @@ import NotificationProvider from './contexts/NotificationContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <NotificationProvider>
-      <ListProvider>
-        <App />
-      </ListProvider>
-    </NotificationProvider>
+    <BrowserRouter>
+      <NotificationProvider>
+        <ListProvider>
+          <App />
+        </ListProvider>
+      </NotificationProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),
 );
