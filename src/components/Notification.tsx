@@ -16,7 +16,7 @@ const Notification = ({ notification }: { notification: NotificationType }) => {
     return () => {
       clearTimeout(notify);
     };
-  }, []);
+  }, [dismissTime]);
 
   return (
     <Container isFading={isFading} type={type}>
