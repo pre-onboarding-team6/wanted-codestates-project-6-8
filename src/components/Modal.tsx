@@ -17,7 +17,7 @@ export default function Modal({
   show,
   closeModal,
   setShowModal,
-  useDelete = true,
+  useDelete = false,
   accomName,
   accomAddress,
   accomNumber,
@@ -54,7 +54,6 @@ export default function Modal({
     if (!contentRef.current) return;
 
     const focusableEls = Array.from(
-      // 여기는 무조건 밑에 태그들 다 넣어주어야 하는 건지! 원래 이렇게 쓰는건지..
       contentRef.current.querySelectorAll(
         'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
       ),
@@ -70,7 +69,6 @@ export default function Modal({
   }, [contentRef]);
 
   useEffect(() => {
-    // 한빈님 하신 거에서는 왜 if문이 두개로 나누어져 있는지
     if (show && document.activeElement?.tagName === 'BUTTON') {
       setPrevActiveEl(document.activeElement);
       setNextOfPrevActiveEl(document.activeElement.nextElementSibling);
@@ -78,6 +76,11 @@ export default function Modal({
       setLastFocus();
     }
 
+    if (show) {
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = 'auto';
+    }
     document.documentElement.addEventListener('keydown', escapeClose);
     return () => {
       document.documentElement.removeEventListener('keydown', escapeClose);
@@ -141,13 +144,11 @@ export default function Modal({
     closeModalAndFocusPrev();
   };
 
-  // aria를 안해줘도 되는지
   return show ? (
     <ModalContainer ref={contentRef} onClick={closeModal}>
       <ModalContent
         onClick={(e) => e.stopPropagation()}
         role="dialog"
-        aria-labelledby="dialog1"
         aria-modal="true"
       >
         <div ref={firstFocusTrap} tabIndex={0} />
