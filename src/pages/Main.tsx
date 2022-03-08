@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import NotificationCenter from '../components/NotificationCenter';
 import ListCard from '../components/ListCard';
@@ -36,9 +36,7 @@ const Main = ({ setScrollLock }: ScrollProps) => {
 
   const [selectedOption, setSelectedOption] = useState<Option>(options[0]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [savedList, setSavedList] = useState<IlistWithMemo[]>(list);
   const [displayList, setDisplayList] = useState<IlistWithMemo[]>(list);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
@@ -55,12 +53,16 @@ const Main = ({ setScrollLock }: ScrollProps) => {
 
   const searchList = () => {
     const { key } = selectedOption;
-    let newList = [...savedList];
+    let newList = [...list];
     newList = newList.filter((item: IlistWithMemo) =>
       item[key].includes(searchValue),
     );
     setDisplayList(newList);
   };
+
+  useEffect(() => {
+    setDisplayList(list);
+  }, [list]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -99,7 +101,6 @@ const Main = ({ setScrollLock }: ScrollProps) => {
               data={item}
               setOpenModal={setOpenModal}
               setClickedItem={setClickedItem}
-              setIsEditing={setIsEditing}
             />
           ))
         ) : (

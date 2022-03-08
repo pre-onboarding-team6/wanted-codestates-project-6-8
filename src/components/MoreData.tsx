@@ -6,7 +6,9 @@ const MoreData = () => {
   return (
     <Container>
       <Link to="/list">
-        <MoreButton type="button">휴양림 데이터 가져오기</MoreButton>
+        <MoreButton tabIndex={-1} type="button">
+          휴양림 데이터 가져오기
+        </MoreButton>
       </Link>
     </Container>
   );

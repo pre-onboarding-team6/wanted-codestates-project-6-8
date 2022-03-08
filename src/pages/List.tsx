@@ -6,7 +6,7 @@ import axios from 'axios';
 import Loader from '../components/Loader';
 import { useInView } from 'react-intersection-observer';
 import Modal from '../components/Modal';
-import { Ilist, IlistWithMemo } from '../contexts/ListContext';
+import { IlistWithMemo } from '../contexts/ListContext';
 
 export interface ScrollProps {
   setScrollLock: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,8 +34,6 @@ const List = ({ setScrollLock }: ScrollProps) => {
   const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
   const SERVICE_KEY = process.env.REACT_APP_SERVICE_KEY;
   const navigate = useNavigate();
-
-  console.log('openModal:', openModal);
 
   const loadData = useCallback(async () => {
     try {
@@ -69,9 +67,6 @@ const List = ({ setScrollLock }: ScrollProps) => {
       setPage((prev) => prev + 1);
     }
   }, [inView, loading]);
-
-  console.log(page);
-  console.log(items);
 
   const handleCloseModal = () => {
     setOpenModal(false);
