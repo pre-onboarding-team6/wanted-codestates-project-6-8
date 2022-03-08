@@ -8,7 +8,7 @@
 
 ## **⚙**개발 환경
 
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/emotion/styled-C071BE.svg?&style=for-the-badge&logo=emotion&logoColor=white"></a>
+<img src="https://img.shields.io/badge/typescript-3178C6.svg?&style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/emotion/styled-C071BE.svg?&style=for-the-badge&logo=emotion&logoColor=white"></a>
 
 <br>
 
