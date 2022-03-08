@@ -31,6 +31,45 @@ const initialIdata = {
   휴양림_주소: '',
 };
 
+const MainButton = () => {
+  return (
+    <ButtonContainer>
+      <MoreData />
+    </ButtonContainer>
+  );
+};
+
+const MemoButton = React.memo(MainButton);
+
+const MainList = ({
+  displayList,
+  setOpenModal,
+  setClickedItem,
+}: {
+  displayList: IlistWithMemo[];
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedItem: React.Dispatch<React.SetStateAction<IlistWithMemo>>;
+}) => {
+  return (
+    <ListContainer>
+      {displayList.length > 0 ? (
+        displayList.map((item) => (
+          <ListCard
+            key={item.id}
+            data={item}
+            setOpenModal={setOpenModal}
+            setClickedItem={setClickedItem}
+          />
+        ))
+      ) : (
+        <div>저장된 휴양림 데이터가 없습니다.</div>
+      )}
+    </ListContainer>
+  );
+};
+
+const MemoList = React.memo(MainList);
+
 const Main = ({ setScrollLock }: ScrollProps) => {
   const { list } = useContext(ListContext);
 
@@ -89,24 +128,13 @@ const Main = ({ setScrollLock }: ScrollProps) => {
             }}
           />
         </InputContainer>
-        <ButtonContainer>
-          <MoreData />
-        </ButtonContainer>
+        <MemoButton />
       </HeaderContainer>
-      <ListContainer>
-        {displayList.length > 0 ? (
-          displayList.map((item) => (
-            <ListCard
-              key={item.id}
-              data={item}
-              setOpenModal={setOpenModal}
-              setClickedItem={setClickedItem}
-            />
-          ))
-        ) : (
-          <div>저장된 휴양림 데이터가 없습니다.</div>
-        )}
-      </ListContainer>
+      <MemoList
+        displayList={displayList}
+        setOpenModal={setOpenModal}
+        setClickedItem={setClickedItem}
+      />
       <NotificationCenter />
       <Modal
         show={openModal}

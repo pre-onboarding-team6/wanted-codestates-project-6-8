@@ -53,7 +53,7 @@ const List = ({ setScrollLock }: ScrollProps) => {
       console.log(error);
     }
     setLoading(false);
-  }, [page]);
+  }, [page, SERVICE_KEY]);
 
   const goToMain = () => {
     navigate('/');
@@ -67,7 +67,7 @@ const List = ({ setScrollLock }: ScrollProps) => {
     if (inView && !loading && !loadFinished) {
       setPage((prev) => prev + 1);
     }
-  }, [inView, loading]);
+  }, [inView, loading, loadFinished]);
 
   const handleCloseModal = () => {
     setOpenModal(false);
