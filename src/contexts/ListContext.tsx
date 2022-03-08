@@ -7,22 +7,13 @@ import {
 } from 'react';
 
 export interface Ilist {
-  contents: string;
-  emdNm: string;
-  fcAddr: string;
-  fcAddrDetail: string;
-  fcGbn: string;
-  fcNm: string;
-  fcNo: number;
-  ref1: string;
-  ref2: string;
-  ref3: string;
-  sggNm: string;
-  siNm: string;
-  wDate: string;
-  xp: string;
-  yp: string;
-  zip: string;
+  경도: string;
+  관할: string;
+  기준일: string;
+  위도: string;
+  전화번호: string;
+  휴양림_명칭: string;
+  휴양림_주소: string;
 }
 
 export interface IlistWithMemo extends Ilist {
@@ -55,22 +46,14 @@ export interface Ichildren {
 
 const isListWithMemo = (object: any): object is IlistWithMemo => {
   return (
-    Object.prototype.hasOwnProperty.call(object, 'contents') &&
-    Object.prototype.hasOwnProperty.call(object, 'emdNm') &&
-    Object.prototype.hasOwnProperty.call(object, 'fcAddr') &&
-    Object.prototype.hasOwnProperty.call(object, 'fcAddrDetail') &&
-    Object.prototype.hasOwnProperty.call(object, 'fcGbn') &&
-    Object.prototype.hasOwnProperty.call(object, 'fcNm') &&
-    Object.prototype.hasOwnProperty.call(object, 'fcNo') &&
-    Object.prototype.hasOwnProperty.call(object, 'ref1') &&
-    Object.prototype.hasOwnProperty.call(object, 'ref2') &&
-    Object.prototype.hasOwnProperty.call(object, 'ref3') &&
-    Object.prototype.hasOwnProperty.call(object, 'sggNm') &&
-    Object.prototype.hasOwnProperty.call(object, 'siNm') &&
-    Object.prototype.hasOwnProperty.call(object, 'wDate') &&
-    Object.prototype.hasOwnProperty.call(object, 'xp') &&
-    Object.prototype.hasOwnProperty.call(object, 'yp') &&
-    Object.prototype.hasOwnProperty.call(object, 'zip') &&
+    Object.prototype.hasOwnProperty.call(object, '경도') &&
+    Object.prototype.hasOwnProperty.call(object, '관할') &&
+    Object.prototype.hasOwnProperty.call(object, '기준일') &&
+    Object.prototype.hasOwnProperty.call(object, '위도') &&
+    Object.prototype.hasOwnProperty.call(object, '전화번호') &&
+    Object.prototype.hasOwnProperty.call(object, '휴양림_명칭') &&
+    Object.prototype.hasOwnProperty.call(object, '휴양림_주소') &&
+    Object.prototype.hasOwnProperty.call(object, 'id') &&
     Object.prototype.hasOwnProperty.call(object, 'memo')
   );
 };
