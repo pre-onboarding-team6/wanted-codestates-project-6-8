@@ -1,23 +1,16 @@
 import styled from '@emotion/styled';
-
-export interface ListData {
-  id: number;
-  휴양림_명칭: string;
-  memo?: string;
-  휴양림_주소: string;
-  전화번호: string;
-}
+import { IlistWithMemo } from '../contexts/ListContext';
 
 interface Iprops {
-  data: ListData;
+  data: IlistWithMemo;
   setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
-  setClickedItem: React.Dispatch<React.SetStateAction<ListData>>;
+  setClickedItem: React.Dispatch<React.SetStateAction<IlistWithMemo>>;
 }
 
 const ListCard = (props: Iprops) => {
   const { data, setOpenModal, setIsEditing, setClickedItem } = props;
-  const { id, 휴양림_명칭, memo, 휴양림_주소, 전화번호 } = data;
+  const { memo, 휴양림_명칭, 휴양림_주소, 전화번호 } = data;
 
   const selectItem = () => {
     console.log('select');
@@ -31,25 +24,14 @@ const ListCard = (props: Iprops) => {
     setClickedItem(data);
   };
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLLIElement>) => {
-    if (e.key === 'Enter') {
-      if (setOpenModal) {
-        selectItem();
-      } else {
-        editCard();
-      }
-    }
-  };
   return (
-    <ListContainer
-      tabIndex={0}
-      onClick={setOpenModal ? selectItem : editCard}
-      onKeyPress={(e) => handleEnter(e)}
-    >
-      <Name>{휴양림_명칭}</Name>
-      <Address>{휴양림_주소}</Address>
-      <Contact>{전화번호}</Contact>
-      {memo && <Memo>{memo}</Memo>}
+    <ListContainer onClick={setOpenModal ? selectItem : editCard}>
+      <button role={'listitem'}>
+        <Name>{휴양림_명칭}</Name>
+        <Address>{휴양림_주소}</Address>
+        <Contact>{전화번호}</Contact>
+        {data.memo && <Memo>{memo}</Memo>}
+      </button>
     </ListContainer>
   );
 };
@@ -59,15 +41,24 @@ export default ListCard;
 const ListContainer = styled.li`
   width: 100%;
   height: auto;
-  padding: 10px 15px;
   margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   font-size: 16px;
+  cursor: pointer;
   &:hover {
     background-color: #f0f0f0;
+  }
+  button {
+    witdh: 100%;
+    height: 100%;
+    display: block;
+    padding: 10px 15px;
+    text-align: inherit;
+    background-color: transparent;
+    border: none;
     cursor: pointer;
   }
 `;

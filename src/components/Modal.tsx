@@ -8,8 +8,7 @@ import React, {
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ScrollProps } from '../pages/List';
-import { ListData } from './ListCard';
-import { ListContext } from '../contexts/ListContext';
+import { IlistWithMemo, ListContext } from '../contexts/ListContext';
 import { useNavigate } from 'react-router-dom';
 
 interface Props extends ScrollProps {
@@ -17,7 +16,7 @@ interface Props extends ScrollProps {
   closeModal: () => void;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   useDelete?: boolean;
-  data: ListData;
+  data: IlistWithMemo;
 }
 
 export default function Modal({
@@ -43,7 +42,7 @@ export default function Modal({
 
   const [memoValue, setMemoValue] = useState('');
 
-  const { list, addList, deleteList, editList } = useContext(ListContext);
+  const { addList, deleteList, editList } = useContext(ListContext);
 
   const closeModalAndFocusPrev = useCallback(() => {
     setShowModal(false);
@@ -82,7 +81,7 @@ export default function Modal({
   }, [contentRef]);
 
   useEffect(() => {
-    if (show && document.activeElement?.tagName === 'LI') {
+    if (show && document.activeElement?.tagName === 'BUTTON') {
       setPrevActiveEl(document.activeElement);
       setNextOfPrevActiveEl(document.activeElement.nextElementSibling);
       inputMemoRef.current?.focus();
@@ -168,7 +167,7 @@ export default function Modal({
     }
 
     closeModalAndFocusPrev();
-    // goToMain();
+    goToMain();
   };
 
   const deleteItem = () => {

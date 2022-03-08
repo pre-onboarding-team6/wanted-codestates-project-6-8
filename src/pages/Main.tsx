@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useContext, useState } from 'react';
 import styled from '@emotion/styled';
 import NotificationCenter from '../components/NotificationCenter';
-import ListCard, { ListData } from '../components/ListCard';
-import { ListContext } from '../contexts/ListContext';
+import ListCard from '../components/ListCard';
+import { IlistWithMemo, ListContext } from '../contexts/ListContext';
 import Modal from '../components/Modal';
 import { ScrollProps } from './List';
 
@@ -12,20 +12,31 @@ const options: { value: string; label: string }[] = [
   { value: 'memo', label: '메모' },
 ];
 
+const initialIdata = {
+  id: 2,
+  memo: '추울때 가야 좋은 곳',
+  경도: '',
+  관할: '',
+  기준일: '',
+  위도: '',
+  전화번호: '',
+  휴양림_명칭: '',
+  휴양림_주소: '',
+};
+
 const Main = ({ setScrollLock }: ScrollProps) => {
   const [selectedOption, setSelectedOption] = useState<
     'name' | 'address' | 'memo'
   >('name');
   const [searchValue, setSearchValue] = useState<string>('');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  console.log('[Main]isEditing', isEditing);
+
   const { list } = useContext(ListContext);
+  console.log('[Main]list:', list);
+
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [clickedItem, setClickedItem] = useState<ListData>({
-    id: 0,
-    휴양림_명칭: '',
-    memo: '',
-    휴양림_주소: '',
-    전화번호: '',
-  });
+  const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
 
   const changeSelectValue = (e: ChangeEvent) => {
     const { value } = e.target as HTMLSelectElement;
@@ -71,12 +82,13 @@ const Main = ({ setScrollLock }: ScrollProps) => {
           />
         </InputContainer>
         <ListContainer>
-          {list.map((item) => (
+          {list.map((item: IlistWithMemo) => (
             <ListCard
               key={item.id}
               data={item}
               setOpenModal={setOpenModal}
               setClickedItem={setClickedItem}
+              setIsEditing={setIsEditing}
             />
           ))}
         </ListContainer>
@@ -97,8 +109,8 @@ const Main = ({ setScrollLock }: ScrollProps) => {
 export default Main;
 
 const Container = styled.div`
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
 `;

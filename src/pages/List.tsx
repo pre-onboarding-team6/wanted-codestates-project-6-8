@@ -2,29 +2,36 @@ import ListCard from '../components/ListCard';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ListData } from '../components/ListCard';
 import axios from 'axios';
 import Loader from '../components/Loader';
 import { useInView } from 'react-intersection-observer';
 import Modal from '../components/Modal';
+import { Ilist, IlistWithMemo } from '../contexts/ListContext';
 
 export interface ScrollProps {
   setScrollLock: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const initialIdata = {
+  id: 0,
+  memo: '',
+  경도: '',
+  관할: '',
+  기준일: '',
+  위도: '',
+  전화번호: '',
+  휴양림_명칭: '',
+  휴양림_주소: '',
+};
+
 const List = ({ setScrollLock }: ScrollProps) => {
   const [ref, inView] = useInView();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadFinished, setLoadFinished] = useState<boolean>(false);
+  const [items, setItems] = useState<IlistWithMemo[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [clickedItem, setClickedItem] = useState<ListData>({
-    id: 0,
-    휴양림_명칭: '',
-    memo: '',
-    휴양림_주소: '',
-    전화번호: '',
-  });
+  const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
   const SERVICE_KEY = process.env.REACT_APP_SERVICE_KEY;
   const navigate = useNavigate();
 
@@ -37,7 +44,11 @@ const List = ({ setScrollLock }: ScrollProps) => {
           `https://api.odcloud.kr/api/15099285/v1/uddi:57e7fc08-b32c-482d-8dc7-ab02864a70b7?serviceKey=${SERVICE_KEY}&page=${page}&perPage=10&returnType=JSON`,
         )
         .then((res) => {
-          setItems((prev: any) => [...prev, ...res.data.data]);
+          const jsonRes = res.data.data;
+          setItems((prev: IlistWithMemo[]) => [...prev, ...jsonRes]);
+          if (jsonRes.length < 10) {
+            setLoadFinished(true);
+          }
         });
     } catch (error) {
       console.log(error);
@@ -54,7 +65,7 @@ const List = ({ setScrollLock }: ScrollProps) => {
   }, [loadData]);
 
   useEffect(() => {
-    if (inView && !loading) {
+    if (inView && !loading && !loadFinished) {
       setPage((prev) => prev + 1);
     }
   }, [inView, loading]);
@@ -74,7 +85,7 @@ const List = ({ setScrollLock }: ScrollProps) => {
         </PrevButton>
       </NavigationBar>
       <ListContainer>
-        {items.map((item: ListData, index: number) => (
+        {items.map((item: IlistWithMemo, index: number) => (
           <React.Fragment key={index}>
             {items.length - 1 === index ? (
               <div ref={ref}>
@@ -103,7 +114,6 @@ const List = ({ setScrollLock }: ScrollProps) => {
         setShowModal={setOpenModal}
         closeModal={handleCloseModal}
         setScrollLock={setScrollLock}
-        useDelete
         data={clickedItem}
       />
     </>
