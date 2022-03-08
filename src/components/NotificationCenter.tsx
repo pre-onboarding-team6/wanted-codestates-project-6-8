@@ -18,8 +18,9 @@ export default NotificationCenter;
 
 const Container = styled.div`
   font-size: 1rem;
-  position: absolute;
+  position: fixed;
   z-index: 999999;
   top: 50px;
-  right: 0px;
+  right: 50px;
+  overflow: hidden;
 `;
