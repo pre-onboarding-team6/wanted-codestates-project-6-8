@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 import { ScrollProps } from '../pages/List';
 import { IlistWithMemo, ListContext } from '../contexts/ListContext';
 import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from '../contexts/NotificationContext';
 
 interface Props extends ScrollProps {
   show: boolean;
@@ -43,6 +44,7 @@ export default function Modal({
   const [memoValue, setMemoValue] = useState('');
 
   const { addList, deleteList, editList } = useContext(ListContext);
+  const { notify } = useContext(NotificationContext);
 
   const closeModalAndFocusPrev = useCallback(() => {
     setShowModal(false);
@@ -143,7 +145,7 @@ export default function Modal({
   ) => {
     e.preventDefault();
     if (!inputMemoRef.current?.value) {
-      console.error('메모를 입력해주세요.');
+      notify('메모를 입력해주세요.', 'error');
       return;
     }
 
@@ -152,6 +154,8 @@ export default function Modal({
     if (useDelete) {
       // edit
       editList({ id, memo: newMemo });
+
+      notify('메모 수정이 완료되었습니다.', 'success');
     } else {
       // add
       addList({
@@ -164,6 +168,7 @@ export default function Modal({
         },
         memo: newMemo,
       });
+      notify('휴양림이 추가되었습니다.', 'success');
     }
 
     closeModalAndFocusPrev();
