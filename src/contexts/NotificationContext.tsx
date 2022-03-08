@@ -45,7 +45,6 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (!dequed) {
-      console.log('등록');
       timer = setTimeout(
         dequeueNotification,
         notifications.length > 0
