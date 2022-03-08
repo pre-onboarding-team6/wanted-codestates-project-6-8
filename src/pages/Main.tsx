@@ -5,11 +5,18 @@ import ListCard from '../components/ListCard';
 import { IlistWithMemo, ListContext } from '../contexts/ListContext';
 import Modal from '../components/Modal';
 import { ScrollProps } from './List';
+import MoreData from '../components/MoreData';
 
-const options: { value: string; label: string }[] = [
-  { value: 'name', label: '이름' },
-  { value: 'address', label: '주소' },
-  { value: 'memo', label: '메모' },
+interface Option {
+  value: string;
+  label: string;
+  key: '휴양림_명칭' | '휴양림_주소' | 'memo';
+}
+
+const options: Option[] = [
+  { value: 'name', label: '이름', key: '휴양림_명칭' },
+  { value: 'address', label: '주소', key: '휴양림_주소' },
+  { value: 'memo', label: '메모', key: 'memo' },
 ];
 
 const initialIdata = {
@@ -25,24 +32,20 @@ const initialIdata = {
 };
 
 const Main = ({ setScrollLock }: ScrollProps) => {
-  const [selectedOption, setSelectedOption] = useState<
-    'name' | 'address' | 'memo'
-  >('name');
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  console.log('[Main]isEditing', isEditing);
-
   const { list } = useContext(ListContext);
-  console.log('[Main]list:', list);
+
+  const [selectedOption, setSelectedOption] = useState<Option>(options[0]);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [savedList, setSavedList] = useState<IlistWithMemo[]>(list);
+  const [displayList, setDisplayList] = useState<IlistWithMemo[]>(list);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
 
   const changeSelectValue = (e: ChangeEvent) => {
     const { value } = e.target as HTMLSelectElement;
-    if (value === 'name' || value === 'address' || value === 'memo') {
-      setSelectedOption(value);
-    }
+    setSelectedOption(options[Number(value)]);
   };
 
   const changeSearchValue = (e: ChangeEvent) => {
@@ -51,9 +54,12 @@ const Main = ({ setScrollLock }: ScrollProps) => {
   };
 
   const searchList = () => {
-    // selectedOption
-    // searchValue
-    // 옵션과 검색어로 리스트를 필터링
+    const { key } = selectedOption;
+    let newList = [...savedList];
+    newList = newList.filter((item: IlistWithMemo) =>
+      item[key].includes(searchValue),
+    );
+    setDisplayList(newList);
   };
 
   const handleCloseModal = () => {
@@ -61,12 +67,12 @@ const Main = ({ setScrollLock }: ScrollProps) => {
   };
 
   return (
-    <Container>
-      <MainContainer>
+    <MainContainer>
+      <HeaderContainer>
         <InputContainer>
           <Select onChange={changeSelectValue}>
-            {options.map(({ label, value }, idx) => (
-              <option value={value} key={idx}>
+            {options.map(({ label }, idx) => (
+              <option value={idx} key={idx}>
                 {label}
               </option>
             ))}
@@ -81,8 +87,13 @@ const Main = ({ setScrollLock }: ScrollProps) => {
             }}
           />
         </InputContainer>
-        <ListContainer>
-          {list.map((item: IlistWithMemo) => (
+        <ButtonContainer>
+          <MoreData />
+        </ButtonContainer>
+      </HeaderContainer>
+      <ListContainer>
+        {displayList.length > 0 ? (
+          displayList.map((item) => (
             <ListCard
               key={item.id}
               data={item}
@@ -90,10 +101,12 @@ const Main = ({ setScrollLock }: ScrollProps) => {
               setClickedItem={setClickedItem}
               setIsEditing={setIsEditing}
             />
-          ))}
-        </ListContainer>
-        <NotificationCenter />
-      </MainContainer>
+          ))
+        ) : (
+          <div>저장된 휴양림 데이터가 없습니다.</div>
+        )}
+      </ListContainer>
+      <NotificationCenter />
       <Modal
         show={openModal}
         setShowModal={setOpenModal}
@@ -102,32 +115,38 @@ const Main = ({ setScrollLock }: ScrollProps) => {
         data={clickedItem}
         setScrollLock={setScrollLock}
       />
-    </Container>
+    </MainContainer>
   );
 };
 
 export default Main;
 
-const Container = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
 const MainContainer = styled.div`
   position: relative;
-  width: 360px;
-  height: 812px;
-  border: 1px solid gray;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+`;
+
+const HeaderContainer = styled.header`
+  width: 358px;
+  box-shadow: 0px 2px 2px 0px #aeaeae;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background: white;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   align-items: center;
-  height: 4rem;
+  height: 50px;
+  width: 100%;
   padding: 0.5rem;
+`;
+
+const ButtonContainer = styled.div`
+  padding: 0.5rem;
+  padding-top: 0;
 `;
 
 const Select = styled.select`
@@ -146,8 +165,5 @@ const Input = styled.input`
 
 const ListContainer = styled.ul`
   padding: 0.5rem;
-`;
-
-const Item = styled.li`
-  background: green;
+  padding-top: 80px;
 `;
