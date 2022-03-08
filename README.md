@@ -39,9 +39,10 @@
 '충청북도 휴양림 조회 및 저장, 수정' 웹페이지 구현
 
 ### 1. 시작화면
+<img height="400" alt="main" src="https://user-images.githubusercontent.com/90097736/157172179-3c0ca657-258a-49fa-940c-77c361e1421a.png">
 
 ### 2. 충청북도 휴양림 조회(무한스크롤)
-<img src="https://user-images.githubusercontent.com/90097736/157158225-15b33807-d0fc-459f-8bd9-a653dbbbeeea.gif" height="400" alt="infiniteScroll">
+<img src="https://user-images.githubusercontent.com/90097736/157172227-016739ce-22de-4c7a-91d2-64e49899a38a.gif" height="400" alt="api">
 
 ### 3. 로컬스토리지 저장(+메모)
 <img src="https://user-images.githubusercontent.com/90097736/157171526-1ea5bef3-ef9c-4356-bff4-ecafb26e502e.gif" height="400" alt="save">
