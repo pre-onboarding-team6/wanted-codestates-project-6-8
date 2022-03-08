@@ -226,16 +226,17 @@ export default function Modal({
 }
 
 const ModalContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  width: 360px;
+  height: 812px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%);
 `;
 
 const ModalContent = styled.div`
