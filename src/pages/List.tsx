@@ -6,12 +6,14 @@ import { ListData } from '../components/ListCard';
 import axios from 'axios';
 import Loader from '../components/Loader';
 import { useInView } from 'react-intersection-observer';
+import { Ilist } from '../contexts/ListContext';
 
 const List = () => {
   const [ref, inView] = useInView();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadFinished, setLoadFinished] = useState<boolean>(false);
+  const [items, setItems] = useState<Ilist[]>([]);
   const [page, setPage] = useState<number>(1);
   const SERVICE_KEY = process.env.REACT_APP_SERVICE_KEY;
   const navigate = useNavigate();
@@ -25,7 +27,11 @@ const List = () => {
           `https://api.odcloud.kr/api/15099285/v1/uddi:57e7fc08-b32c-482d-8dc7-ab02864a70b7?serviceKey=${SERVICE_KEY}&page=${page}&perPage=10&returnType=JSON`,
         )
         .then((res) => {
-          setItems((prev: any) => [...prev, ...res.data.data]);
+          const jsonRes = res.data.data;
+          setItems((prev: Ilist[]) => [...prev, ...jsonRes]);
+          if (jsonRes.length < 10) {
+            setLoadFinished(true);
+          }
         });
     } catch (error) {
       console.log(error);
@@ -42,13 +48,10 @@ const List = () => {
   }, [loadData]);
 
   useEffect(() => {
-    if (inView && !loading) {
+    if (inView && !loading && !loadFinished) {
       setPage((prev) => prev + 1);
     }
   }, [inView, loading]);
-
-  console.log(page);
-  console.log(items);
 
   return !loading ? (
     <>
