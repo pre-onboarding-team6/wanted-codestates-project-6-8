@@ -9,7 +9,9 @@ ReactDOM.render(
   <React.StrictMode>
     <NotificationProvider>
       <ListProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ListProvider>
     </NotificationProvider>
   </React.StrictMode>,
