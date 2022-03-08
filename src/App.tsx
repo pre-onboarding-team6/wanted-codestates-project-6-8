@@ -28,5 +28,6 @@ const AppComponent = styled.div<{ scrollLock: boolean }>`
   height: 812px;
   margin: auto;
   border: 1px solid #ddd;
-  overflow: ${({ scrollLock }) => (scrollLock ? 'hidden' : 'scroll')};
+  overflow-x: hidden;
+  overflow-y: ${({ scrollLock }) => (scrollLock ? 'hidden' : 'scroll')};
 `;

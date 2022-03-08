@@ -159,13 +159,7 @@ export default function Modal({
     } else {
       // add
       addList({
-        selectedList: {
-          ...data,
-          경도: '',
-          관할: '',
-          기준일: '',
-          위도: '',
-        },
+        selectedList: data,
         memo: newMemo,
       });
       notify('휴양림이 추가되었습니다.', 'success');
@@ -182,7 +176,6 @@ export default function Modal({
   };
 
   useEffect(() => {
-    if (!memo) return;
     setMemoValue(memo);
   }, [memo]);
 
@@ -205,7 +198,7 @@ export default function Modal({
           <InputMemo
             ref={inputMemoRef}
             placeholder="내용을 입력해주세요"
-            value={memoValue}
+            value={memoValue ?? ''}
             onChange={(e) => setMemoValue(e.target.value)}
           />
           <ButtonWrapper>
