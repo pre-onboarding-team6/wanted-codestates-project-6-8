@@ -108,7 +108,7 @@ const Main = ({ setScrollLock }: ScrollProps) => {
   };
 
   return (
-    <MainContainer>
+    <>
       <HeaderContainer>
         <InputContainer>
           <Select onChange={changeSelectValue}>
@@ -144,17 +144,11 @@ const Main = ({ setScrollLock }: ScrollProps) => {
         data={clickedItem}
         setScrollLock={setScrollLock}
       />
-    </MainContainer>
+    </>
   );
 };
 
 export default Main;
-
-const MainContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`;
 
 const HeaderContainer = styled.header`
   width: 358px;
