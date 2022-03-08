@@ -44,7 +44,7 @@ const ListContainer = styled.li`
     background-color: #f0f0f0;
   }
   button {
-    witdh: 100%;
+    width: 100%;
     height: 100%;
     display: block;
     padding: 10px 15px;
