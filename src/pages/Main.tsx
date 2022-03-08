@@ -65,7 +65,6 @@ export default Main;
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
-
   display: flex;
   justify-content: center;
 `;
@@ -74,18 +73,14 @@ const MainContainer = styled.div`
   position: relative;
   width: 360px;
   height: 812px;
-
   border: 1px solid gray;
-
   overflow: hidden;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   align-items: center;
-
   height: 4rem;
-
   padding: 0.5rem;
 `;
 
