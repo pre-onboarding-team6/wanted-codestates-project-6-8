@@ -1,8 +1,10 @@
-import React, { ChangeEvent, useState, useContext, useEffect } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import styled from '@emotion/styled';
 import NotificationCenter from '../components/NotificationCenter';
-import { IlistWithMemo, ListContext } from '../contexts/ListContext';
 import ListCard from '../components/ListCard';
+import { IlistWithMemo, ListContext } from '../contexts/ListContext';
+import Modal from '../components/Modal';
+import { ScrollProps } from './List';
 import MoreData from '../components/MoreData';
 
 interface Option {
@@ -17,32 +19,29 @@ const options: Option[] = [
   { value: 'memo', label: '메모', key: 'memo' },
 ];
 
-// 임시 데이터
-const tempdata = {
+const initialIdata = {
   id: 2,
-  휴양림_명칭: '속리산숲체험휴양마을',
   memo: '추울때 가야 좋은 곳',
-  휴양림_주소: '충청북도 보은군 속리산면 속리산로 596',
-  전화번호: '043-540-3220',
+  경도: '',
+  관할: '',
+  기준일: '',
+  위도: '',
+  전화번호: '',
+  휴양림_명칭: '',
+  휴양림_주소: '',
 };
 
-const Main = () => {
+const Main = ({ setScrollLock }: ScrollProps) => {
+  const { list } = useContext(ListContext);
+
   const [selectedOption, setSelectedOption] = useState<Option>(options[0]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [savedList, setSavedList] = useState<IlistWithMemo[]>([]);
-  const [displayList, setDisplayList] = useState<IlistWithMemo[]>([]);
+  const [savedList, setSavedList] = useState<IlistWithMemo[]>(list);
+  const [displayList, setDisplayList] = useState<IlistWithMemo[]>(list);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  useEffect(() => {
-    const list = JSON.parse(localStorage.getItem('list') as string);
-    setSavedList(list);
-    setDisplayList(list);
-  }, []);
-
-  console.log('[Main]isEditing', isEditing);
-
-  const { list, addList, deleteList, editList } = useContext(ListContext);
-  console.log('[Main]list:', list);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
 
   const changeSelectValue = (e: ChangeEvent) => {
     const { value } = e.target as HTMLSelectElement;
@@ -61,6 +60,10 @@ const Main = () => {
       item[key].includes(searchValue),
     );
     setDisplayList(newList);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -90,18 +93,28 @@ const Main = () => {
       </HeaderContainer>
       <ListContainer>
         {displayList.length > 0 ? (
-          displayList.map((item, idx) => (
+          displayList.map((item) => (
             <ListCard
-              key={idx}
+              key={item.id}
               data={item}
+              setOpenModal={setOpenModal}
+              setClickedItem={setClickedItem}
               setIsEditing={setIsEditing}
-            ></ListCard>
+            />
           ))
         ) : (
           <div>저장된 휴양림 데이터가 없습니다.</div>
         )}
       </ListContainer>
       <NotificationCenter />
+      <Modal
+        show={openModal}
+        setShowModal={setOpenModal}
+        useDelete
+        closeModal={handleCloseModal}
+        data={clickedItem}
+        setScrollLock={setScrollLock}
+      />
     </MainContainer>
   );
 };

@@ -1,16 +1,22 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { ScrollProps } from '../pages/List';
+import { IlistWithMemo, ListContext } from '../contexts/ListContext';
+import { useNavigate } from 'react-router-dom';
 
-interface Props {
+interface Props extends ScrollProps {
   show: boolean;
   closeModal: () => void;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   useDelete?: boolean;
-  accomName?: string;
-  accomAddress?: string;
-  accomNumber?: string;
-  memo?: string;
+  data: IlistWithMemo;
 }
 
 export default function Modal({
@@ -18,11 +24,11 @@ export default function Modal({
   closeModal,
   setShowModal,
   useDelete = false,
-  accomName,
-  accomAddress,
-  accomNumber,
-  memo,
+  setScrollLock,
+  data,
 }: Props) {
+  const navigate = useNavigate();
+
   const [prevActiveEl, setPrevActiveEl] = useState<Element | null>();
   const [nextOfPrevActiveEl, setNextOfPrevActiveEl] =
     useState<Element | null>();
@@ -31,6 +37,12 @@ export default function Modal({
   const inputMemoRef = useRef<HTMLInputElement>(null);
   const firstFocusTrap = useRef<HTMLDivElement>(null);
   const lastFocusTrap = useRef<HTMLDivElement>(null);
+
+  const { id, memo, 휴양림_명칭, 휴양림_주소, 전화번호 } = data;
+
+  const [memoValue, setMemoValue] = useState('');
+
+  const { addList, deleteList, editList } = useContext(ListContext);
 
   const closeModalAndFocusPrev = useCallback(() => {
     setShowModal(false);
@@ -76,16 +88,12 @@ export default function Modal({
       setLastFocus();
     }
 
-    if (show) {
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.documentElement.style.overflow = 'auto';
-    }
+    setScrollLock(show ? true : false);
     document.documentElement.addEventListener('keydown', escapeClose);
     return () => {
       document.documentElement.removeEventListener('keydown', escapeClose);
     };
-  }, [show, escapeClose, setLastFocus]);
+  }, [show, escapeClose, setLastFocus, setScrollLock]);
 
   const focusLastEl = useCallback(
     (e) => {
@@ -106,6 +114,10 @@ export default function Modal({
     },
     [lastFocusTrap],
   );
+
+  const goToMain = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     const focusHead = firstFocusTrap.current;
@@ -135,14 +147,38 @@ export default function Modal({
       return;
     }
 
-    console.log(inputMemoRef.current?.value);
+    const newMemo = inputMemoRef.current?.value;
+
+    if (useDelete) {
+      // edit
+      editList({ id, memo: newMemo });
+    } else {
+      // add
+      addList({
+        selectedList: {
+          ...data,
+          경도: '',
+          관할: '',
+          기준일: '',
+          위도: '',
+        },
+        memo: newMemo,
+      });
+    }
+
+    closeModalAndFocusPrev();
+    goToMain();
+  };
+
+  const deleteItem = () => {
+    deleteList(id);
     closeModalAndFocusPrev();
   };
 
-  const deleteItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log('delete');
-    closeModalAndFocusPrev();
-  };
+  useEffect(() => {
+    if (!memo) return;
+    setMemoValue(memo);
+  }, [memo]);
 
   return show ? (
     <ModalContainer ref={contentRef} onClick={closeModal}>
@@ -153,23 +189,22 @@ export default function Modal({
       >
         <div ref={firstFocusTrap} tabIndex={0} />
         <Title>이름</Title>
-        <Content>{accomName ?? '속리산숲체험휴양마을'}</Content>
+        <Content>{휴양림_명칭}</Content>
         <Title>주소</Title>
-        <Content>
-          {accomAddress ?? '충청북도 보은군 속리산면 속리산로 596'}
-        </Content>
+        <Content>{휴양림_주소}</Content>
         <Title>연락처</Title>
-        <Content>{accomNumber ?? '043-540-3220'}</Content>
+        <Content>{전화번호}</Content>
         <Title>메모</Title>
         <Form onSubmit={saveItemWithMemo}>
-          <InputMemo ref={inputMemoRef} placeholder="내용을 입력해주세요" />
+          <InputMemo
+            ref={inputMemoRef}
+            placeholder="내용을 입력해주세요"
+            value={memoValue}
+            onChange={(e) => setMemoValue(e.target.value)}
+          />
           <ButtonWrapper>
             {useDelete && (
-              <Button
-                type="button"
-                colorType="red"
-                onClick={(e) => deleteItem(e)}
-              >
+              <Button type="button" colorType="red" onClick={deleteItem}>
                 삭제
               </Button>
             )}

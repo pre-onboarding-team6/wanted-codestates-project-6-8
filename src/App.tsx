@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Global } from '@emotion/react';
 import { reset } from './styles/reset';
 import { Routes, Route } from 'react-router-dom';
@@ -7,12 +7,14 @@ import List from './pages/List';
 import styled from '@emotion/styled';
 
 function App() {
+  const [scrollLock, setScrollLock] = useState(false);
+
   return (
-    <AppComponent>
+    <AppComponent scrollLock={scrollLock}>
       <Global styles={reset} />
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/list" element={<List />} />
+        <Route path="/" element={<Main setScrollLock={setScrollLock} />} />
+        <Route path="/list" element={<List setScrollLock={setScrollLock} />} />
       </Routes>
     </AppComponent>
   );
@@ -20,10 +22,11 @@ function App() {
 
 export default App;
 
-const AppComponent = styled.div`
+const AppComponent = styled.div<{ scrollLock: boolean }>`
+  position: relative;
   width: 360px;
   height: 812px;
   margin: auto;
   border: 1px solid #ddd;
-  overflow: scroll;
+  overflow: ${({ scrollLock }) => (scrollLock ? 'hidden' : 'scroll')};
 `;

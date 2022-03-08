@@ -1,31 +1,27 @@
 import styled from '@emotion/styled';
-
-export interface ListData {
-  id?: number;
-  휴양림_명칭: string;
-  memo?: string;
-  휴양림_주소: string;
-  전화번호: string;
-}
+import { IlistWithMemo } from '../contexts/ListContext';
 
 interface Iprops {
-  data: ListData;
+  data: IlistWithMemo;
   setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedItem: React.Dispatch<React.SetStateAction<IlistWithMemo>>;
 }
 
 const ListCard = (props: Iprops) => {
-  const { data, setOpenModal, setIsEditing } = props;
-  const { id, 휴양림_명칭, memo, 휴양림_주소, 전화번호 } = data;
+  const { data, setOpenModal, setIsEditing, setClickedItem } = props;
+  const { memo, 휴양림_명칭, 휴양림_주소, 전화번호 } = data;
 
   const selectItem = () => {
     console.log('select');
     setOpenModal && setOpenModal(true);
+    setClickedItem(data);
   };
 
   const editCard = () => {
     console.log('edit');
     setIsEditing && setIsEditing(true);
+    setClickedItem(data);
   };
 
   return (
@@ -34,7 +30,7 @@ const ListCard = (props: Iprops) => {
         <Name>{휴양림_명칭}</Name>
         <Address>{휴양림_주소}</Address>
         <Contact>{전화번호}</Contact>
-        {memo && <Memo>{memo}</Memo>}
+        {data.memo && <Memo>{memo}</Memo>}
       </button>
     </ListContainer>
   );

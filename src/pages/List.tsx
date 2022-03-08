@@ -2,19 +2,36 @@ import ListCard from '../components/ListCard';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ListData } from '../components/ListCard';
 import axios from 'axios';
 import Loader from '../components/Loader';
 import { useInView } from 'react-intersection-observer';
-import { Ilist } from '../contexts/ListContext';
+import Modal from '../components/Modal';
+import { Ilist, IlistWithMemo } from '../contexts/ListContext';
 
-const List = () => {
+export interface ScrollProps {
+  setScrollLock: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const initialIdata = {
+  id: 0,
+  memo: '',
+  경도: '',
+  관할: '',
+  기준일: '',
+  위도: '',
+  전화번호: '',
+  휴양림_명칭: '',
+  휴양림_주소: '',
+};
+
+const List = ({ setScrollLock }: ScrollProps) => {
   const [ref, inView] = useInView();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadFinished, setLoadFinished] = useState<boolean>(false);
-  const [items, setItems] = useState<Ilist[]>([]);
+  const [items, setItems] = useState<IlistWithMemo[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [clickedItem, setClickedItem] = useState<IlistWithMemo>(initialIdata);
   const SERVICE_KEY = process.env.REACT_APP_SERVICE_KEY;
   const navigate = useNavigate();
 
@@ -28,7 +45,7 @@ const List = () => {
         )
         .then((res) => {
           const jsonRes = res.data.data;
-          setItems((prev: Ilist[]) => [...prev, ...jsonRes]);
+          setItems((prev: IlistWithMemo[]) => [...prev, ...jsonRes]);
           if (jsonRes.length < 10) {
             setLoadFinished(true);
           }
@@ -53,6 +70,13 @@ const List = () => {
     }
   }, [inView, loading]);
 
+  console.log(page);
+  console.log(items);
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   return !loading ? (
     <>
       <NavigationBar>
@@ -61,20 +85,37 @@ const List = () => {
         </PrevButton>
       </NavigationBar>
       <ListContainer>
-        {items.map((item: ListData, index: number) => (
+        {items.map((item: IlistWithMemo, index: number) => (
           <React.Fragment key={index}>
             {items.length - 1 === index ? (
               <div ref={ref}>
-                <ListCard key={index} data={item} setOpenModal={setOpenModal} />
+                <ListCard
+                  key={index}
+                  data={item}
+                  setOpenModal={setOpenModal}
+                  setClickedItem={setClickedItem}
+                />
               </div>
             ) : (
               <div>
-                <ListCard key={index} data={item} setOpenModal={setOpenModal} />
+                <ListCard
+                  key={index}
+                  data={item}
+                  setOpenModal={setOpenModal}
+                  setClickedItem={setClickedItem}
+                />
               </div>
             )}
           </React.Fragment>
         ))}
       </ListContainer>
+      <Modal
+        show={openModal}
+        setShowModal={setOpenModal}
+        closeModal={handleCloseModal}
+        setScrollLock={setScrollLock}
+        data={clickedItem}
+      />
     </>
   ) : (
     <Loader />
