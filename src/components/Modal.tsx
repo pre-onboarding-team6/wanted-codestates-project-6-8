@@ -177,6 +177,7 @@ export default function Modal({
 
   const deleteItem = () => {
     deleteList(id);
+    notify('휴양림이 삭제되었습니다.', 'success');
     closeModalAndFocusPrev();
   };
 
