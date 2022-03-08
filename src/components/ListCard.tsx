@@ -30,10 +30,12 @@ const ListCard = (props: Iprops) => {
 
   return (
     <ListContainer onClick={setOpenModal ? selectItem : editCard}>
-      <Name>{휴양림_명칭}</Name>
-      <Address>{휴양림_주소}</Address>
-      <Contact>{전화번호}</Contact>
-      {memo && <Memo>{memo}</Memo>}
+      <button role={'listitem'}>
+        <Name>{휴양림_명칭}</Name>
+        <Address>{휴양림_주소}</Address>
+        <Contact>{전화번호}</Contact>
+        {memo && <Memo>{memo}</Memo>}
+      </button>
     </ListContainer>
   );
 };
@@ -43,15 +45,24 @@ export default ListCard;
 const ListContainer = styled.li`
   width: 100%;
   height: auto;
-  padding: 10px 15px;
   margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   font-size: 16px;
+  cursor: pointer;
   &:hover {
     background-color: #f0f0f0;
+  }
+  button {
+    witdh: 100%;
+    height: 100%;
+    display: block;
+    padding: 10px 15px;
+    text-align: inherit;
+    background-color: transparent;
+    border: none;
     cursor: pointer;
   }
 `;
