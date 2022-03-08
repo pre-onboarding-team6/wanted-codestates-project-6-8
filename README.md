@@ -41,6 +41,7 @@
 ### 1. 시작화면
 
 ### 2. 충청북도 휴양림 조회(무한스크롤)
+![infiniteScroll](https://user-images.githubusercontent.com/90097736/157158225-15b33807-d0fc-459f-8bd9-a653dbbbeeea.gif)
 
 ### 3. 로컬스토리지 저장(+메모)
 
