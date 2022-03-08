@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export interface ListData {
-  id?: number;
+  id: number;
   휴양림_명칭: string;
   memo?: string;
   휴양림_주소: string;

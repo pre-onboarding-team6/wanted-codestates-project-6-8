@@ -13,7 +13,7 @@ function App() {
     <AppComponent scrollLock={scrollLock}>
       <Global styles={reset} />
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main setScrollLock={setScrollLock} />} />
         <Route path="/list" element={<List setScrollLock={setScrollLock} />} />
       </Routes>
     </AppComponent>

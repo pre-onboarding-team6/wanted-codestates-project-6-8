@@ -103,6 +103,7 @@ const List = ({ setScrollLock }: ScrollProps) => {
         setShowModal={setOpenModal}
         closeModal={handleCloseModal}
         setScrollLock={setScrollLock}
+        useDelete
         data={clickedItem}
       />
     </>

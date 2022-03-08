@@ -1,6 +1,10 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import styled from '@emotion/styled';
 import NotificationCenter from '../components/NotificationCenter';
+import ListCard, { ListData } from '../components/ListCard';
+import { ListContext } from '../contexts/ListContext';
+import Modal from '../components/Modal';
+import { ScrollProps } from './List';
 
 const options: { value: string; label: string }[] = [
   { value: 'name', label: '이름' },
@@ -8,11 +12,20 @@ const options: { value: string; label: string }[] = [
   { value: 'memo', label: '메모' },
 ];
 
-const Main = () => {
+const Main = ({ setScrollLock }: ScrollProps) => {
   const [selectedOption, setSelectedOption] = useState<
     'name' | 'address' | 'memo'
   >('name');
   const [searchValue, setSearchValue] = useState<string>('');
+  const { list } = useContext(ListContext);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [clickedItem, setClickedItem] = useState<ListData>({
+    id: 0,
+    휴양림_명칭: '',
+    memo: '',
+    휴양림_주소: '',
+    전화번호: '',
+  });
 
   const changeSelectValue = (e: ChangeEvent) => {
     const { value } = e.target as HTMLSelectElement;
@@ -30,6 +43,10 @@ const Main = () => {
     // selectedOption
     // searchValue
     // 옵션과 검색어로 리스트를 필터링
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -53,9 +70,26 @@ const Main = () => {
             }}
           />
         </InputContainer>
-        <ListContainer></ListContainer>
+        <ListContainer>
+          {list.map((item) => (
+            <ListCard
+              key={item.id}
+              data={item}
+              setOpenModal={setOpenModal}
+              setClickedItem={setClickedItem}
+            />
+          ))}
+        </ListContainer>
         <NotificationCenter />
       </MainContainer>
+      <Modal
+        show={openModal}
+        setShowModal={setOpenModal}
+        useDelete
+        closeModal={handleCloseModal}
+        data={clickedItem}
+        setScrollLock={setScrollLock}
+      />
     </Container>
   );
 };
