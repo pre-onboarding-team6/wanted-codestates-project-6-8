@@ -1,46 +1,47 @@
-# Getting Started with Create React App
+# [**Project 5**] 더블엔씨 기업과제
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🔗 배포 주소
 
-## Available Scripts
+- 아래 URL을 클릭하면 배포된 페이지로 이동합니다.
 
-In the project directory, you can run:
+<br>
 
-### `npm start`
+## **⚙**개발 환경
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"></a>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<br>
 
-### `npm test`
+## 👫 참여 멤버
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 김도연 : notification / 검색 폼 / 필터링
+- 유지수 : 모달 제작
+- 박세은 : 데이터 fetching 및 무한 스크롤
+- 유혜정 : ListCard 제작
+- 손한빈 : 메모 추가 및 수정 / 리스트 저장 및 삭제
 
-### `npm run build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🕹 설치 및 시작방법
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+# install dependencies
+ $ npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# serve with hot reload at localhost:3000
+ $ npm start
+```
 
-### `npm run eject`
+<br>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🖥️ 구현 목록
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+'충청북도 휴양림 조회 및 저장, 수정' 웹페이지 구현
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 1. 시작화면
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 2. 충청북도 휴양림 조회(무한스크롤)
 
-## Learn More
+### 3. 로컬스토리지 저장(+메모)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 4. 메인페이지(조회 및 수정)
