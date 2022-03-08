@@ -1,83 +1,107 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
-import ListCard from '../components/ListCard';
-import { ListData } from '../components/ListCard';
+import NotificationCenter from '../components/NotificationCenter';
 
-// fetch data -> item 예시
-const items: ListData[] = [
-  {
-    id: 1,
-    휴양림_명칭: '속리산숲체험휴양마을',
-    휴양림_주소: '충청북도 보은군 속리산면 속리산로 596',
-    전화번호: '043-540-3220',
-  },
-  {
-    id: 2,
-    휴양림_명칭: '속리산숲체험휴양마을',
-    memo: '추울때 가야 좋은곳',
-    휴양림_주소: '충청북도 보은군 속리산면 속리산로 596',
-    전화번호: '043-540-3220',
-  },
+const options: { value: string; label: string }[] = [
+  { value: 'name', label: '이름' },
+  { value: 'address', label: '주소' },
+  { value: 'memo', label: '메모' },
 ];
 
-const Main = (props: any) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+const Main = () => {
+  const [selectedOption, setSelectedOption] = useState<
+    'name' | 'address' | 'memo'
+  >('name');
+  const [searchValue, setSearchValue] = useState<string>('');
 
-  console.log('isEditing:', isEditing);
+  const changeSelectValue = (e: ChangeEvent) => {
+    const { value } = e.target as HTMLSelectElement;
+    if (value === 'name' || value === 'address' || value === 'memo') {
+      setSelectedOption(value);
+    }
+  };
+
+  const changeSearchValue = (e: ChangeEvent) => {
+    const { value } = e.target as HTMLInputElement;
+    setSearchValue(value);
+  };
+
+  const searchList = () => {
+    // selectedOption
+    // searchValue
+    // 옵션과 검색어로 리스트를 필터링
+  };
 
   return (
-    <>
-      <SearchBar>
-        <SelectOption>
-          <option>이름</option>
-          <option>주소</option>
-          <option>메모</option>
-        </SelectOption>
-        <SearchInput type="text" placeholder="검색어를 입력해주세요" />
-      </SearchBar>
-      <SavedItem>
-        {/* <div>list section...</div> */}
-        {items.map((item: ListData, index: number) => (
-          <ListCard key={index} data={item} setIsEditing={setIsEditing} />
-        ))}
-      </SavedItem>
-    </>
+    <Container>
+      <MainContainer>
+        <InputContainer>
+          <Select onChange={changeSelectValue}>
+            {options.map(({ label, value }, idx) => (
+              <option value={value} key={idx}>
+                {label}
+              </option>
+            ))}
+          </Select>
+          <Input
+            type="text"
+            value={searchValue}
+            onChange={changeSearchValue}
+            placeholder="검색어를 입력해주세요"
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') searchList();
+            }}
+          />
+        </InputContainer>
+        <ListContainer></ListContainer>
+        <NotificationCenter />
+      </MainContainer>
+    </Container>
   );
 };
 
 export default Main;
 
-const SearchBar = styled.header`
-  width: 358px;
-  height: 50px;
-  box-shadow: 0px 2px 2px 0px #aeaeae;
+const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  flex-direction: row;
-  position: fixed;
+  justify-content: center;
 `;
 
-const SelectOption = styled.select`
-  width: 25%;
-  background-color: white;
-  height: 100%;
-  border: none;
-  border-right: 1px solid #ddd;
-  font-size: 16px;
+const MainContainer = styled.div`
+  position: relative;
+  width: 360px;
+  height: 812px;
+  border: 1px solid gray;
+  overflow: hidden;
 `;
 
-const SearchInput = styled.input`
-  width: 75%;
-  background-color: white;
-  height: 100%;
-  border: none;
-  padding-left: 10px;
-  font-size: 16px;
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding: 0.5rem;
 `;
 
-const SavedItem = styled.ul`
-  width: 90%;
+const Select = styled.select`
   height: 100%;
-  margin: auto;
-  padding-top: 60px;
-  margin-bottom: 100px;
+  padding: 0rem 0.7rem;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+`;
+
+const Input = styled.input`
+  height: 100%;
+  flex: 1;
+  font-size: 1rem;
+  padding-left: 0.5rem;
+`;
+
+const ListContainer = styled.ul`
+  padding: 0.5rem;
+`;
+
+const Item = styled.li`
+  background: green;
 `;
