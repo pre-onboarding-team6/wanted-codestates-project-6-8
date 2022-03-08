@@ -194,5 +194,5 @@ const Input = styled.input`
 
 const ListContainer = styled.ul`
   padding: 0.5rem;
-  padding-top: 80px;
+  padding-top: 100px;
 `;
