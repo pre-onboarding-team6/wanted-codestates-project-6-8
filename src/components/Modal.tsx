@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { ScrollProps } from '../pages/List';
 
-interface Props {
+interface Props extends ScrollProps {
   show: boolean;
   closeModal: () => void;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +12,7 @@ interface Props {
   accomAddress?: string;
   accomNumber?: string;
   memo?: string;
+  setScrollLock: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Modal({
@@ -22,6 +24,7 @@ export default function Modal({
   accomAddress,
   accomNumber,
   memo,
+  setScrollLock,
 }: Props) {
   const [prevActiveEl, setPrevActiveEl] = useState<Element | null>();
   const [nextOfPrevActiveEl, setNextOfPrevActiveEl] =
@@ -69,23 +72,19 @@ export default function Modal({
   }, [contentRef]);
 
   useEffect(() => {
-    if (show && document.activeElement?.tagName === 'BUTTON') {
+    if (show && document.activeElement?.tagName === 'LI') {
       setPrevActiveEl(document.activeElement);
       setNextOfPrevActiveEl(document.activeElement.nextElementSibling);
       inputMemoRef.current?.focus();
       setLastFocus();
     }
 
-    if (show) {
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.documentElement.style.overflow = 'auto';
-    }
+    setScrollLock(show ? true : false);
     document.documentElement.addEventListener('keydown', escapeClose);
     return () => {
       document.documentElement.removeEventListener('keydown', escapeClose);
     };
-  }, [show, escapeClose, setLastFocus]);
+  }, [show, escapeClose, setLastFocus, setScrollLock]);
 
   const focusLastEl = useCallback(
     (e) => {

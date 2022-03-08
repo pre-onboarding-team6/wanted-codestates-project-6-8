@@ -28,8 +28,22 @@ const ListCard = (props: Iprops) => {
     setIsEditing && setIsEditing(true);
   };
 
+  const handleEnter = (e: React.KeyboardEvent<HTMLLIElement>) => {
+    console.log(e.key);
+    if (e.key === 'Enter') {
+      if (setOpenModal) {
+        selectItem();
+      } else {
+        editCard();
+      }
+    }
+  };
   return (
-    <ListContainer onClick={setOpenModal ? selectItem : editCard}>
+    <ListContainer
+      tabIndex={0}
+      onClick={setOpenModal ? selectItem : editCard}
+      onKeyPress={(e) => handleEnter(e)}
+    >
       <Name>{휴양림_명칭}</Name>
       <Address>{휴양림_주소}</Address>
       <Contact>{전화번호}</Contact>

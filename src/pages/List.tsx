@@ -6,8 +6,13 @@ import { ListData } from '../components/ListCard';
 import axios from 'axios';
 import Loader from '../components/Loader';
 import { useInView } from 'react-intersection-observer';
+import Modal from '../components/Modal';
 
-const List = () => {
+export interface ScrollProps {
+  setScrollLock: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const List = ({ setScrollLock }: ScrollProps) => {
   const [ref, inView] = useInView();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
@@ -50,6 +55,10 @@ const List = () => {
   console.log(page);
   console.log(items);
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   return !loading ? (
     <>
       <NavigationBar>
@@ -72,6 +81,12 @@ const List = () => {
           </React.Fragment>
         ))}
       </ListContainer>
+      <Modal
+        show={openModal}
+        setShowModal={setOpenModal}
+        closeModal={handleCloseModal}
+        setScrollLock={setScrollLock}
+      />
     </>
   ) : (
     <Loader />
