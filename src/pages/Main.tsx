@@ -1,6 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useContext } from 'react';
 import styled from '@emotion/styled';
 import NotificationCenter from '../components/NotificationCenter';
+import { ListContext } from '../contexts/ListContext';
+import ListCard from '../components/ListCard';
 
 const options: { value: string; label: string }[] = [
   { value: 'name', label: '이름' },
@@ -8,11 +10,25 @@ const options: { value: string; label: string }[] = [
   { value: 'memo', label: '메모' },
 ];
 
+// 임시 데이터
+const tempdata = {
+  id: 2,
+  휴양림_명칭: '속리산숲체험휴양마을',
+  memo: '추울때 가야 좋은 곳',
+  휴양림_주소: '충청북도 보은군 속리산면 속리산로 596',
+  전화번호: '043-540-3220'
+}
+
 const Main = () => {
   const [selectedOption, setSelectedOption] = useState<
     'name' | 'address' | 'memo'
   >('name');
   const [searchValue, setSearchValue] = useState<string>('');
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  console.log('[Main]isEditing', isEditing)
+
+  const { list, addList, deleteList, editList } = useContext(ListContext);
+  console.log('[Main]list:',list)
 
   const changeSelectValue = (e: ChangeEvent) => {
     const { value } = e.target as HTMLSelectElement;
@@ -53,7 +69,9 @@ const Main = () => {
             }}
           />
         </InputContainer>
-        <ListContainer></ListContainer>
+        <ListContainer>
+          <ListCard data={tempdata} setIsEditing={setIsEditing}/>
+        </ListContainer>
         <NotificationCenter />
       </MainContainer>
     </Container>
